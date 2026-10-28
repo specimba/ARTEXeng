@@ -174,28 +174,28 @@ func intp(v int) *int { return &v }
 // 注：planner/worker/mainagent/auto 的交互式 shell 默认由下方 interactive_shell_default_v1
 // 块统一置 true（尊重后续 toggle）；这里的 interactiveShell 只给需要「建行即默认开」的新 agent。
 var builtinAgents = []builtinAgent{
-	{"goals", "目标拆解", "goals", "把渗透任务目标拆解成若干独立、可验证的子目标。", []promptVar{
+	{"goals", "Target decomposition", "goals", "Break a penetration-test objective into separate, verifiable sub-goals.", []promptVar{
 		{"EngagementDescription", "任务描述（测试对象/背景）", "测试 example.com 站点", "exploration"},
 		// Now 是全局 runtime 变量(见 server.globalPromptVars),不再在各 agent 目录里
 		// 重复定义,否则 withGlobalVars 追加时会与全局项撞名。
 	}, false, nil},
-	{"planner", "规划", "planner", "读取态势、判定目标，只在确有未覆盖的新方向时补充探索意图（每任务一个规划循环）。", []promptVar{
+	{"planner", "Planning", "planner", "Read the situation and assess goals, adding exploration intents only when a genuinely uncovered direction remains (one planning loop per task).", []promptVar{
 		{"Goal", "任务总目标", "拿下 example.com 的管理员权限", "exploration"},
 		{"AssetSummary", "资产计数/类型分布摘要(可选)", "domain:3 ip:5 site:2", "distilled"},
 	}, false, nil},
-	{"mainagent", "主", "main", "人机接口：观察进展，把人的意图落成 hint 或高优先级意图。", []promptVar{
+	{"mainagent", "Main", "main", "Human interface: watch progress and turn a person's intent into a hint or a high-priority intent.", []promptVar{
 		{"Goal", "当前任务目标", "拿下 example.com 的管理员权限", "exploration"},
 		{"AssetSummary", "开局态势摘要(可选)", "domain:3 ip:5", "distilled"},
 		{"FindingsSummary", "已确认漏洞摘要(可选)", "high:1 medium:2", "distilled"},
 	}, false, nil},
-	{"worker", "执行", "worker", "领取一条意图执行，把发现的事实/漏洞写回知识图谱后停止。", []promptVar{
+	{"worker", "Execution", "worker", "Claim one intent, write discovered facts and vulnerabilities back to the knowledge graph, then stop.", []promptVar{
 		{"ProxyAddr", "记录代理地址(驱动 if 双文案)", "127.0.0.1:8080", "runtime"},
 		{"WorkerName", "worker 自我标识(可选)", "worker-1", "runtime"},
 	}, false, nil},
 	// Auto:内置「平台操作」agent。不参与渗透编排循环,经对话页驱动,用工具操作平台。
-	{"auto", "Auto", "assistant", "平台操作助手：用工具管理任务(建/看/暂停/给提示)与资产，并可创建/修改 skill、自定义工具、MCP。", nil, false, nil},
+	{"auto", "Auto", "assistant", "Platform assistant: use tools to manage tasks (create, view, pause, add hints) and assets, and to create or edit skills, custom tools, and MCP servers.", nil, false, nil},
 	// 渗透测试:内置「独立渗透」agent。经对话页驱动,一人从侦察到收尾走完整条渗透链,自己规划自己执行自己验证。默认开启交互式 shell。
-	{"pentest", "渗透测试", "assistant", "独立渗透 agent：一人从侦察→找攻击面→深入利用→验证→收尾走完整条链，自己规划、自己执行、自己对抗式验证。", nil, true, intp(0)},
+	{"pentest", "Penetration test", "assistant", "Standalone penetration agent: one operator runs the full chain from reconnaissance through attack-surface discovery, exploitation, verification, and close-out, planning, executing, and adversarially verifying on their own.", nil, true, intp(0)},
 }
 
 // seedBuiltins inserts the fixed built-in agents and their variable catalog (idempotent).
@@ -266,6 +266,44 @@ ON CONFLICT (name) DO NOTHING`,
 	}
 	if err := d.seedDefaultAssetInterceptRules(); err != nil {
 		return fmt.Errorf("seed asset intercept rules: %w", err)
+	}
+	if err := d.refreshLegacyAgentCopy(); err != nil {
+		return fmt.Errorf("refresh agent copy: %w", err)
+	}
+	return nil
+}
+
+// legacyAgentCopy is the original Chinese display text for agents that are
+// inserted once and then left alone. Startup rewrites a row only while it still
+// matches that text, so a name or description edited in the UI stays put.
+type legacyAgentCopy struct {
+	key, oldName, name, oldDesc, desc string
+}
+
+func (d *DB) refreshLegacyAgentCopy() error {
+	rows := []legacyAgentCopy{
+		{
+			key:     "reporter",
+			oldName: "报告撰写",
+			name:    "Report writing",
+			oldDesc: "漏洞详细报告撰写：发现漏洞时自动触发，查取证据与执行过程后写 Markdown 报告并回写。",
+			desc:    "Detailed vulnerability reports: triggered automatically when a finding is recorded, gathers evidence and the execution trace, then writes Markdown and saves it back.",
+		},
+		{
+			key:     "retester",
+			oldName: "漏洞复测",
+			name:    "Vulnerability retest",
+			oldDesc: "从漏洞详情手动启动，读取原证据并保存独立复测结论。",
+			desc:    "Started manually from a finding detail page; reads the original evidence and saves an independent retest conclusion.",
+		},
+	}
+	for _, r := range rows {
+		if _, err := d.Exec(`UPDATE agents SET name=$1 WHERE key=$2 AND name=$3`, r.name, r.key, r.oldName); err != nil {
+			return fmt.Errorf("agent %s name: %w", r.key, err)
+		}
+		if _, err := d.Exec(`UPDATE agents SET description=$1 WHERE key=$2 AND description=$3`, r.desc, r.key, r.oldDesc); err != nil {
+			return fmt.Errorf("agent %s description: %w", r.key, err)
+		}
 	}
 	return nil
 }

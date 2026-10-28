@@ -79,6 +79,13 @@ func TestOpenSeed(t *testing.T) {
 	if agents != wantAgents {
 		t.Fatalf("want %d builtin agents, got %d", wantAgents, agents)
 	}
+	var goalsName string
+	if err := d.QueryRow(`SELECT name FROM agents WHERE key='goals'`).Scan(&goalsName); err != nil {
+		t.Fatal(err)
+	}
+	if goalsName != "Target decomposition" {
+		t.Fatalf("goals display name = %q, want English inventory copy", goalsName)
+	}
 
 	// planner should have at least its seeded catalog vars
 	wantPlannerVars := 0
