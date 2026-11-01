@@ -1,6 +1,9 @@
 import { GROSS_PLAN_B_RECORDS, grossPlanBCounts, grossPlanBRecord } from "./gross-plan-b-audit.ts";
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
+import { dirname, join } from "node:path";
 import test from "node:test";
+import { fileURLToPath } from "node:url";
 
 const AUGUST_IDS = [
   "master-authority-20260817",
@@ -37,6 +40,68 @@ test("august drive sentences stay needs-review and do not change observed rows",
     OBSERVED_IDS,
   );
   assert.equal(grossPlanBRecord("missing-august-id"), undefined);
+});
+
+const REQUIRED_FIELDS = [
+  "id",
+  "title",
+  "lane",
+  "sourceFile",
+  "sessionId",
+  "timeLabel",
+  "status",
+  "impact",
+  "riskClass",
+  "citation",
+  "adapted",
+  "unused",
+];
+
+test("grossPlanBCounts matches the array and every record has required fields", () => {
+  const counts = grossPlanBCounts();
+  const ids = GROSS_PLAN_B_RECORDS.map((record) => record.id);
+  assert.equal(counts.observed + counts.needsReview, GROSS_PLAN_B_RECORDS.length);
+  assert.equal(new Set(ids).size, ids.length);
+
+  let observed = 0;
+  let needsReview = 0;
+  for (const record of GROSS_PLAN_B_RECORDS) {
+    for (const field of REQUIRED_FIELDS) {
+      assert.equal(typeof record[field], "string", `${record.id}.${field}`);
+      assert.equal(record[field].trim().length > 0, true, `${record.id}.${field}`);
+    }
+    assert.equal(record.lane === "GROSS" || record.lane === "PLAN B", true, record.id);
+    assert.equal(record.status === "observed" || record.status === "needs-review", true, record.id);
+    if (record.status === "observed") observed += 1;
+    else needsReview += 1;
+    assert.equal(grossPlanBRecord(record.id)?.id, record.id);
+  }
+
+  for (const id of AUGUST_IDS) {
+    assert.equal(ids.includes(id), true, id);
+    assert.equal(grossPlanBRecord(id)?.status, "needs-review");
+  }
+  for (const id of OBSERVED_IDS) {
+    assert.equal(grossPlanBRecord(id)?.status, "observed");
+  }
+
+  assert.equal(counts.observed, observed);
+  assert.equal(counts.needsReview, needsReview);
+  assert.equal(counts.observed, OBSERVED_IDS.length);
+  assert.equal(grossPlanBRecord("missing-august-id"), undefined);
+});
+
+test("register list, unknown ids, and the sidebar entry are wired", () => {
+  const webSrc = join(dirname(fileURLToPath(import.meta.url)), "..");
+  const list = readFileSync(join(webSrc, "app/(main)/function/gross-plan-b/page.tsx"), "utf8");
+  const detail = readFileSync(join(webSrc, "app/(main)/function/gross-plan-b/detail/page.tsx"), "utf8");
+  const sidebar = readFileSync(join(webSrc, "navigation/sidebar/sidebar-items.ts"), "utf8");
+
+  assert.match(list, /grossPlanBCounts\(\)/);
+  assert.match(list, /href=\{`\/function\/gross-plan-b\/detail\?id=\$\{record\.id\}`\}/);
+  assert.match(detail, /grossPlanBRecord\(params\.get\("id"\) \?\? ""\)/);
+  assert.match(detail, /That audit id is not in the seeded register\./);
+  assert.match(sidebar, /id: "gross-plan-b", title: "GROSS \/ PLAN B", url: "\/function\/gross-plan-b"/);
 });
 
 test("august rows do not store procedures, payloads, keys, or marker values", () => {
