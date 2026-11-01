@@ -70,6 +70,7 @@ export const sidebarItems: NavGroup[] = [
       { id: "chat", title: "Conversation", url: "/chat", icon: MessageSquare },
       { id: "tasks", title: "Task", url: "/function/tasks", icon: Target },
       { id: "findings", title: "Discover", url: "/function/findings", icon: Bug },
+      { id: "gross-plan-b", title: "GROSS / PLAN B", url: "/function/gross-plan-b", icon: ClipboardList },
       { id: "traffic", title: "Traffic", url: "/function/traffic", icon: Activity },
       { id: "commands", title: "Tool execution", url: "/function/commands", icon: Terminal },
       { id: "llm-records", title: "LLM Record", url: "/function/llm-records", icon: Radio },

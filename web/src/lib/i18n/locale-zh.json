@@ -2837,5 +2837,16 @@
   "审批记录不存在": "Approval record not found",
   "无效审批状态": "Invalid approval status",
   "无效判定来源": "Invalid determination source",
-  "演示模式不支持旁路提问": "Demo mode does not support bypass queries"
+  "演示模式不支持旁路提问": "Demo mode does not support bypass queries",
+  "执行": "Execution",
+  "渗透测试": "Penetration test",
+  "报告撰写": "Report writing",
+  "把渗透任务目标拆解成若干独立、可验证的子目标。": "Break a penetration-test objective into separate, verifiable sub-goals.",
+  "读取态势、判定目标，只在确有未覆盖的新方向时补充探索意图（每任务一个规划循环）。": "Read the situation and assess goals, adding exploration intents only when a genuinely uncovered direction remains (one planning loop per task).",
+  "人机接口：观察进展，把人的意图落成 hint 或高优先级意图。": "Human interface: watch progress and turn a person's intent into a hint or a high-priority intent.",
+  "领取一条意图执行，把发现的事实/漏洞写回知识图谱后停止。": "Claim one intent, write discovered facts and vulnerabilities back to the knowledge graph, then stop.",
+  "平台操作助手：用工具管理任务(建/看/暂停/给提示)与资产，并可创建/修改 skill、自定义工具、MCP。": "Platform assistant: use tools to manage tasks (create, view, pause, add hints) and assets, and to create or edit skills, custom tools, and MCP servers.",
+  "独立渗透 agent：一人从侦察→找攻击面→深入利用→验证→收尾走完整条链，自己规划、自己执行、自己对抗式验证。": "Standalone penetration agent: one operator runs the full chain from reconnaissance through attack-surface discovery, exploitation, verification, and close-out, planning, executing, and adversarially verifying on their own.",
+  "漏洞详细报告撰写：发现漏洞时自动触发，查取证据与执行过程后写 Markdown 报告并回写。": "Detailed vulnerability reports: triggered automatically when a finding is recorded, gathers evidence and the execution trace, then writes Markdown and saves it back.",
+  "从漏洞详情手动启动，读取原证据并保存独立复测结论。": "Started manually from a finding detail page; reads the original evidence and saves an independent retest conclusion."
 }

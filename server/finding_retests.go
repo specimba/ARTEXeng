@@ -219,7 +219,7 @@ func (s *Server) seedFindingRetester() error {
 	}
 	var id int64
 	err = tx.QueryRow(`INSERT INTO agents(key,name,description,role,builtin,enabled)
-	VALUES ($1,'漏洞复测','从漏洞详情手动启动，读取原证据并保存独立复测结论。','assistant',false,true)
+	VALUES ($1,'Vulnerability retest','Started manually from a finding detail page; reads the original evidence and saves an independent retest conclusion.','assistant',false,true)
 	ON CONFLICT (key) DO NOTHING RETURNING id`, db.FindingRetestAgentKey).Scan(&id)
 	if err != nil && !errors.Is(err, sql.ErrNoRows) {
 		return err
