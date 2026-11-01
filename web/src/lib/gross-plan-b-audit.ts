@@ -193,6 +193,117 @@ export const GROSS_PLAN_B_RECORDS: readonly GrossPlanBRecord[] = [
     unused:
       "Tool matrices, commands, and search queries. Reverse-engineering and exploit-class detail stopped at the risk class.",
   },
+  {
+    id: "master-authority-20260817",
+    title: "17 August master is a parent only after live revalidation",
+    lane: "GROSS",
+    sourceFile: "NEXUS_GROSS_PLANB_AEEG_MASTER_AUTHORITY_2026-08-17.md",
+    sessionId: "not stated in this file",
+    timeLabel: "17 Aug 2026 (document date)",
+    status: "needs-review",
+    impact: "This file is a design parent, and its prose does not outrank a live checkout.",
+    riskClass: "design authority",
+    citation:
+      "Drive file 1teLH3xVRjgUqUpMaH0sMVfgaB8CuHkqq, read in full (3,775 lines). Heading ARCHIVIST / NEXUS-GROSS-PLANB-AEEG-MASTER-002. Status line: CANONICAL PARENT DOCUMENT — implementation-ready after live-state revalidation. It says no prose in the file outranks live runtime evidence, and it names four levels: historical evidence, current design authority, live runtime truth, and implementation receipt.",
+    adapted: "Document date, self-described status, the four level names, and the live-runtime rule.",
+    unused:
+      "Mission sequence, scenario expected results, marker format, credential-use steps, and the external reference list.",
+  },
+  {
+    id: "authority-does-not-increase",
+    title: "A transformation must not increase source authority",
+    lane: "GROSS",
+    sourceFile: "NEXUS_GROSS_PLANB_AEEG_MASTER_AUTHORITY_2026-08-17.md",
+    sessionId: "not stated in this file",
+    timeLabel: "17 Aug 2026 (document date)",
+    status: "needs-review",
+    impact: "A summary, tool result, or model judgment is not recorded as a new grant of authority.",
+    riskClass: "authority monotonicity",
+    citation:
+      "The same file states: No transformation may increase the authority of its source. It also states that no model judgment, summary, compaction, repeated use, trusted-tool reflection, agent consensus, cached tool definition, provider continuation state, task handle, OAuth scope, scanner result, or successful prior execution may grant itself more authority than its authenticated origin possessed.",
+    adapted: "That invariant and the listed non-sources of authority.",
+    unused: "Grant, ticket, and lease construction.",
+  },
+  {
+    id: "lifecycle-stages-not-collapsed",
+    title: "A later data-lifecycle stage is not inferred from an earlier one",
+    lane: "GROSS",
+    sourceFile: "NEXUS_GROSS_PLANB_AEEG_MASTER_AUTHORITY_2026-08-17.md",
+    sessionId: "not stated in this file",
+    timeLabel: "17 Aug 2026 (document date)",
+    status: "needs-review",
+    impact: "Local staging is not treated as transmission, remote receipt, retention, or training use.",
+    riskClass: "evidence ceiling",
+    citation:
+      "Section 4.1 says every data-handling claim names the exact stage, and a later stage is not inferred solely from an earlier one. Section 3.2 says the May evidence did not, by itself, establish for every queued artifact that staged, transmitted, accepted, stored, retained, accessed, and used for training are the same claim.",
+    adapted: "The non-inference rule and the stage names that must stay distinct.",
+    unused:
+      "The affirmative May staging sentence, which stays an unsettled proposal. Queue paths, marker bytes, and watcher timing were not copied.",
+  },
+  {
+    id: "roadmap-candidate-20260823",
+    title: "23 August roadmap is a planning candidate, not one settled sequence",
+    lane: "PLAN B",
+    sourceFile: "REFERENCE_NEXUS_SECURITY_PROGRAM_EXECUTION_ROADMAP_2026-08-23.md",
+    sessionId: "not stated in this file",
+    timeLabel: "23 Aug 2026 (document date)",
+    status: "needs-review",
+    impact: "Neither gate list in this file is doctrine, and a worker completion claim does not promote a gate.",
+    riskClass: "unsettled execution sequence",
+    citation:
+      "Drive file 12Px63kzFlEvWBwJoVqbnkFVSPPPjypoK, read in full (830 lines). Status line: Planning authority candidate; implementation begins only after Gate 0 live revalidation. Parent authority is the 17 August master filename. The file says no later gate may be promoted merely because a worker says it is complete. Section 0 and section 20 do not list the same gate sequence.",
+    adapted:
+      "The candidate status, the parent filename, the worker-completion rule, and the disagreement between the two lists.",
+    unused:
+      "Both gate lists, diagnostic commands, sentinel text, case numbers, and the five publication lanes. Those lanes were not recorded as a six-lane plan.",
+  },
+  {
+    id: "acceptance-independent-verifier",
+    title: "Implemented and verified are separate acceptance bars",
+    lane: "PLAN B",
+    sourceFile: "REFERENCE_NEXUS_SECURITY_PROGRAM_EXECUTION_ROADMAP_2026-08-23.md",
+    sessionId: "not stated in this file",
+    timeLabel: "23 Aug 2026 (document date)",
+    status: "needs-review",
+    impact: "Code plus a same-run worker check is not recorded as independent verification.",
+    riskClass: "evidence integrity",
+    citation:
+      "Section 21 says IMPLEMENTED requires code, tests, integration, and a live runtime receipt. VERIFIED requires an independent verifier or objective oracle, and the worker must not define the verifier during the same run. A failed run is evidence.",
+    adapted: "Those two bars and the failed-run statement.",
+    unused: "Stop-condition handling and marker-registry checks.",
+  },
+  {
+    id: "models-do-not-authorize",
+    title: "Models advise and do not authorize",
+    lane: "GROSS",
+    sourceFile:
+      "NEXUS_GROSS_PLANB_AEEG_MASTER_AUTHORITY_2026-08-17.md; REFERENCE_NEXUS_SECURITY_PROGRAM_EXECUTION_ROADMAP_2026-08-23.md",
+    sessionId: "not stated in this file",
+    timeLabel: "17 Aug 2026 and 23 Aug 2026 (document dates)",
+    status: "needs-review",
+    impact:
+      "A classifier allow, or a report that the task succeeded, is not an authority increase or an effect-integrity proof.",
+    riskClass: "authority monotonicity",
+    citation:
+      "Roadmap Law 7 says a learned allow does not increase authority, and that learned classifiers do not create permissions. The same file says models advise and TrustKernel authorizes. Law 6 says task success does not imply effect integrity. The 17 August master says models, agents, and semantic auditors are never their own authorization or evidence authority.",
+    adapted: "Those role and law statements.",
+    unused: "Training measures, detector names, and harness adaptation steps.",
+  },
+  {
+    id: "cooperative-channel-not-proof",
+    title: "A cooperative audit channel is not independent proof",
+    lane: "PLAN B",
+    sourceFile: "REFERENCE_NEXUS_SECURITY_PROGRAM_EXECUTION_ROADMAP_2026-08-23.md",
+    sessionId: "not stated in this file",
+    timeLabel: "23 Aug 2026 (document date)",
+    status: "needs-review",
+    impact: "A subject's own description of a workflow does not replace an independent observation.",
+    riskClass: "evidence integrity",
+    citation:
+      "Section 2.2 names a Collaborative Audit Channel and says it improves experiment repeatability and ethics, but it does not replace independent proof.",
+    adapted: "The channel name and that limit.",
+    unused: "The compare workflow steps and the instrumentation placement list.",
+  },
 ];
 
 export const GROSS_PLAN_B_REFUSED = [
